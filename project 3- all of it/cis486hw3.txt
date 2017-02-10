@@ -1,0 +1,13 @@
+3.1) 4
+3.2) The program creates 4 different HelloThreads, each numbered from 1 to 4 in order, then in that order it calls them start which in turns
+	runs there run() method, this prints out Hello from thread and then the number of thread and it runs it from 1 to 4.
+4.1) 4
+4.2) The program setups and runs the HelloThreads in the same way as before, how each one now runs 100 times, and since there apears to be
+	interupts that are random, so through looping it will occaionaly switch to another thread that happens to be first on the ready que
+9.1.1) This failed because context switching was on, so it would switch before it got through it's whole section
+
+P1) If Consumer runs first it will be blocked and added to the semaphore que for full as soon as it tries to run something by calling down(&full)
+at this time empty has a counter of 100 and full has one of 0, empty has no que and full has the Consumer on it's que.
+
+P2) Producer now halts once it fills up the buffer and calls down(&empty) it puts in the que for it.  Consumer then can run and it can put producer 
+back into the ready que after one cycle.  Empty is now at 0 with Producer on it's que, while full is at 100 with nothing on it's que.

@@ -1,0 +1,160 @@
+Script started on Wed Oct 29 00:02:30 2014
+nyx 151: ./nachos -f
+^CAssertion failed: line 119, file "../machine/interrupt.cc"
+Abort
+nyx 152: ./nachos -f[Kcp UserPrograms/shell shell
+^CAssertion failed: line 119, file "../machine/interrupt.cc"
+Abort
+nyx 153: ./nachos -cp UserPrograms/shell shell[K[K[K[K[K[K[K[K[K[Khalt halt
+^CAssertion failed: line 119, file "../machine/interrupt.cc"
+Abort
+nyx 154: ./nachos -cp UserPrograms/halt halt[K[K[K[K[K[K[K[Kls ls
+^CAssertion failed: line 119, file "../machine/interrupt.cc"
+Abort
+nyx 155: ./nachos -cp UserPrograms/ls ls[K[K[K[Kcat cat
+^X^CAssertion failed: line 119, file "../machine/interrupt.cc"
+Abort
+nyx 156: ./nachos -cp UserPrograms/cat cat[K[K[K[K[K[Knac[K[K[KNachos.wiki N[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[KNachos.wiki Nachos.wiki 
+^C
+Cleaning up...
+No user programs to compute response time.
+nyx 157: ./nachos -x shell
+NACHOS>
+
+NACHOS>NACHOS>ls
+shell
+halt
+ls
+cat
+Nachos.wi
+Program exited with status 0.
+NACHOS>cat n N	achos.wi
+Opening file: Nachos.wi
+Nachos
+From Wikipedia, the free encyclopedia
+Nachos with nacho cheese, olives, jalapeo pepper, sour cream and salsa
+Origin
+Place of origin 	Mexico
+Creator(s) 	Ignacio Anaya
+Details
+Course 	Meal or snack
+Main ingredient(s) 	Tortilla chips, nacho cheese or shredded cheese, salsa
+"Nacho" and "NACHOS" redirect here. For the instructional operating system, see Not Another Completely Heuristic Operating System. For other uses, see Nacho (disambiguation).
+
+Nachos are a popular food based on nixtamalized corn, of Mexican origin associated with Tex-Mex cuisine that can be either made quickly to serve as a snack or prepared with more ingredients to make a full meal. In Mexico, they are rather called totopos. In their simplest form, nachos are tortilla chips (totopos) covered in nacho cheese or shredded cheese and/or salsa. Sometimes French fries, potato chips, or popcorn are used instead of tortilla chips. First created circa 1943 by Ignacio "Nacho" Anaya, the original nachos consisted of fried corn tortillas covered with melted cheddar cheese and sliced jalapeo peppers.
+Program exited with status 0.
+NACHOS>ls
+shell
+halt
+ls
+cat
+Nachos.wi
+Program exited with status 0.
+NACHOS>shell
+Not enough memory!
+Couldn't execute program.
+NACHOS>halt
+Machine halting!
+
+Ticks: total 141220365, idle 141153949, system 36590, user 29826
+Disk I/O: reads 211, writes 0
+Console I/O: reads 33, writes 1267
+Paging: faults 0
+Network I/O: packets received 0, sent 0
+
+Cleaning up...
+Average response time of user programs was 22.
+nyx 158: ls
+DISK           Nachos.wiki    UserPrograms/  nachos*        typescript
+nyx 159: cd UserPrograms/
+/home/hd00/m/mcgoldma/cis486/Nachos-Demo/UserPrograms
+nyx 160: ls
+Makefile       cat.coff*      halt.coff*     ls             matmult        prog1          prog3          prog4.coff*    shell.bak      sort           sort.s         ufork          unix1.c
+cat            cat.o          halt.o         ls.c           matmult.c      prog1.c        prog3.c        prog4.o        shell.c        sort.c         start.o        ufork.c        
+cat.c          halt           halt.s         ls.coff*       matmult.coff*  prog2          prog4          script         shell.coff*    sort.coff*     start.s        unix
+cat.c.org      halt.c         haltdec        ls.o           matmult.o      prog2.c        prog4.c        shell          shell.o        sort.o         syscall.h      unix.c
+nyx 161: emacs shell.c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[?1h=[42;1H[7m----:---F1  [m[7m[1m*scratch*   [m[7m   All L1     (Fundamental)--------------------------------------------------------------------------------------------------------------------------------------------------------------------[m
+[A[H[43;1HFor information about GNU Emacs and the GNU system, type C-h C-a.[K[H
+[43;1HLoading cc-mode...[K[H
+[43;9Hadvice...[K[H
+[43;18Hdone[H
+[43;9Hcc-mode...done[H
+[43;1HLoading cc-mode...done[K[H[7mFile Edit Options Buffers Tools C Help                                                                                                                                                                                 [m
+[A
+[1m/* shell.c                                                                                                                                                                                                             [m
+[A
+[1m                                                                                                                                                                                                                       [m
+[A
+[1mThis is a simple shell to run on the NACHOS operating system.  Its                                                                                                                                                     [m
+[A
+[1mabilities include:                                                                                                                                                                                                     [m
+[A
+[1m                                                                                                                                                                                                                       [m
+[A
+[1m1) Accepting command line arguments.  The command line is passed as one                                                                                                                                                [m
+[A
+[1mstring to the kernel which parses it into the respective tokens (with a                                                                                                                                                [m
+[A
+[1mfew exceptions.                                                                                                                                                                                                        [m
+[A
+[1m                                                                                                                                                                                                                       [m
+[A
+[1m2) Ability to run a program in the background.  In this instance the                                                                                                                                                   [m
+[A
+[1mshell does not issue a Join syscall.  Rather it just presents the user                                                                                                                                                 [m
+[A
+[1mwith a new prompt.  This feature is utilized by ending the command line                                                                                                                                                [m
+[A
+[1mwith an '&' character.                                                                                                                                                                                                 [m
+[A
+[1m                                                                                                                                                                                                                       [m
+[A
+[1m3) As a side note, the command line is checked for any trailing spaces                                                                                                                                                 [m
+[A
+[1mwhich are then removed.                                                                                                                                                                                                [m
+[A
+[1m                                                                                                                                   

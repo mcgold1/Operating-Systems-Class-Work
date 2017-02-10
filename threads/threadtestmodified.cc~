@@ -1,0 +1,110 @@
+// threadtest.cc 
+//	Simple test case for the threads assignment.
+//
+//	Create two threads, and have them context switch
+//	back and forth between themselves by calling Thread::Yield, 
+//	to illustratethe inner workings of the thread system.
+//
+// Copyright (c) 1992-1993 The Regents of the University of California.
+// All rights reserved.  See copyright.h for copyright notice and limitation 
+// of liability and disclaimer of warranty provisions.
+
+#include "copyright.h"
+#include "system.h"
+#include "request.h"
+#include "list.h"
+#include <stdio.h>
+
+//----------------------------------------------------------------------
+// SimpleThread
+// 	Loop 5 times, yielding the CPU to another ready thread 
+//	each iteration.
+//
+//	"which" is simply a number identifying the thread, for debugging
+//	purposes.
+//----------------------------------------------------------------------
+
+void
+SimpleThread(int which)
+{
+    int num;
+    
+    for (num = 0; num < 5; num++) {
+	printf("*** thread %d looped %d times\n", which, num);
+        currentThread->Yield();
+    }
+    printf("Hello World!");
+}
+
+void
+WorkerThread(Request *r1)
+{
+  char url[50] = r1->url;
+  printf(url);
+}
+
+void
+ClientThread()
+{
+  char url[100];
+  int reqid;
+  
+  Request *r1 = new Request;
+  List *list = new List();
+  FILE *fp = fopen("url.txt", "r");
+  if (!fp)
+    printf(" Cannot open file url.txt!\n");
+  else{
+    int pos = 0;
+    char c =getc(fp);
+    while (c != EOF || pos == 49){
+      if (c == '\n') {
+	url[pos] =' \0';
+	r1->url = url;
+	r1->requesterID = 1;
+	r1->requestID = reqid;
+	list.SortedInsert(*r1, reqid); //add Requst to list
+	reqid ++;
+	pos = 0;
+	
+      }
+      else{
+	url[pos++] = c;
+      }
+      fclose(fp);
+      ServerThread(list);
+    }
+}
+
+void
+ServerThread(List urls)
+{
+  Request *req;
+  Thread *t = new Thread ("Working class threads");
+  while (urls != null)
+  {   
+    *req = *urls;
+    urls.remove();
+    t->Fork(WorkerThread, *req);
+    currentThread->Yield();
+  }
+
+}
+
+//----------------------------------------------------------------------
+// ThreadTest
+// 	Set up a ping-pong between two threads, by forking a thread 
+//	to call SimpleThread, and then calling SimpleThread ourselves.
+//----------------------------------------------------------------------
+
+void
+ThreadTest()
+{
+    DEBUG('t', "Entering SimpleTest");
+
+    // Thread *t = new Thread("forked thread");
+
+   // t->Fork(ClientThread, 1);
+    ClientThread();
+}
+

@@ -1,0 +1,11 @@
+#ifndef REQUEST_H
+#define REQUEST_H
+
+class Request{
+ public:
+  //Request(char *u, int rqtID, int rqtrID, int len);
+  void nullFunction();
+  char *url;
+  int requestID;
+  int requesterID;
+endif
